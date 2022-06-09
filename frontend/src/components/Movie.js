@@ -7,7 +7,7 @@ import { QUERY_A_MOVIE } from '../grapql/querys';
 
 const Movie = () => {
   const [movie, setMovie] = useState('');
-  const [fetchMovie, { data, loading, error }] = useLazyQuery(QUERY_A_MOVIE);
+  const [fetchMovie, { data, loading }] = useLazyQuery(QUERY_A_MOVIE);
 
   const handleGetMovie = () => {
     fetchMovie({
@@ -17,6 +17,7 @@ const Movie = () => {
     });
   };
 
+  //Example of error handling from server
   return (
     <>
       <input value={movie} onChange={(e) => setMovie(e.target.value)} type="text" placeholder="Aaa" />
@@ -24,12 +25,12 @@ const Movie = () => {
         Get Movie
       </button>
       {loading && <p>Loading...</p>}
-      {error && <p>Movie doesn't exist</p>}
-      {data?.movie && (
+      {data?.movie.message && <p>{data.movie.message}</p>}
+      {data?.movie.movie && (
         <div>
-          <p>Name: {data.movie.name}</p>
-          <p>Publication date: {data.movie.publicationDate}</p>
-          <p>Is in theater: {data.movie.isInTheater ? 'Yes' : 'No'}</p>
+          <p>Name: {data.movie.movie.name}</p>
+          <p>Publication date: {data.movie.movie.publicationDate}</p>
+          <p>Is in theater: {data.movie.movie.isInTheater ? 'Yes' : 'No'}</p>
         </div>
       )}
     </>

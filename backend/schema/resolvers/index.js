@@ -1,6 +1,6 @@
 const { getUsers, getUser, getMovies, getMovie } = require('./querys.js');
 const { createUser, updateUserName, deleteUser } = require('./mutations');
-
+//Every resolvers can have input parameter: parent, args, context, info
 const resolvers = {
   Query: {
     users: async () => {
@@ -13,7 +13,9 @@ const resolvers = {
       return await getMovies();
     },
     movie: async (parent, args) => {
-      return await getMovie(args.name);
+      const movie = await getMovie(args.name);
+      if (movie) return { movie };
+      return { message: "Movie doesn't exist." };
     },
   },
   Mutation: {
@@ -25,6 +27,14 @@ const resolvers = {
     },
     deleteUser: async (parent, args) => {
       return await deleteUser(Number(args.id));
+    },
+  },
+  //union that specifies diffrent result
+  MovieResult: {
+    __resolveType(obj) {
+      if (obj.movie) return 'MovieSuccessResult';
+      if (obj.message) return 'MovieErrorResult';
+      return null;
     },
   },
 };

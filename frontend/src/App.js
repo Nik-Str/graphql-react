@@ -4,6 +4,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 //Components
 import Userlist from './components/Userlist';
 import Movie from './components/Movie';
+import User from './components/User';
 
 function App() {
   const client = new ApolloClient({
@@ -16,6 +17,7 @@ function App() {
       <div className="App">Hello World</div>
       <Userlist />
       <Movie />
+      <User />
     </ApolloProvider>
   );
 }

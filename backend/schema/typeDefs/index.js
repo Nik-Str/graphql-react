@@ -28,7 +28,7 @@ const typeDefs = gql`
     users: [User!]!
     user(id: ID!): User!
     movies: [Movie!]!
-    movie(name: String!): Movie!
+    movie(name: String!): MovieResult
   }
 
   #mutations
@@ -49,6 +49,15 @@ const typeDefs = gql`
     updateUserName(input: UpdateUserNameInput!): Int
     deleteUser(id: ID!): Int
   }
+
+  #Example of union
+  type MovieSuccessResult {
+    movie: Movie!
+  }
+  type MovieErrorResult {
+    message: String!
+  }
+  union MovieResult = MovieSuccessResult | MovieErrorResult
 `;
 
 module.exports = { typeDefs };
