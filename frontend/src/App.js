@@ -1,4 +1,3 @@
-import './App.css';
 //Apollo client
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 //Components
@@ -14,7 +13,6 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <div className="App">Hello World</div>
       <Userlist />
       <Movie />
       <User />

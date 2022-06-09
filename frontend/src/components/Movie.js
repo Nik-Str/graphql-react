@@ -7,7 +7,7 @@ import { QUERY_A_MOVIE } from '../grapql/querys';
 
 const Movie = () => {
   const [movie, setMovie] = useState('');
-  const [fetchMovie, { data, loading }] = useLazyQuery(QUERY_A_MOVIE);
+  const [fetchMovie, { data, loading, error }] = useLazyQuery(QUERY_A_MOVIE);
 
   const handleGetMovie = () => {
     fetchMovie({
@@ -17,7 +17,24 @@ const Movie = () => {
     });
   };
 
-  //Example of error handling from server
+  //By giving an final "else" option we eneble to through a exepction when maybe a new response type is sent from/added by the server
+  const Response = () => {
+    if (data?.movie.message) {
+      return <p>{data.movie.message}</p>;
+    } else if (data?.movie.movie) {
+      return (
+        <div>
+          <p>Name: {data.movie.movie.name}</p>
+          <p>Publication date: {data.movie.movie.publicationDate}</p>
+          <p>Is in theater: {data.movie.movie.isInTheater ? 'Yes' : 'No'}</p>
+        </div>
+      );
+    } else {
+      return <p>Unexpected response type</p>;
+    }
+  };
+
+  //Example of handling diffrent results from server that are not directly errors
   return (
     <>
       <input value={movie} onChange={(e) => setMovie(e.target.value)} type="text" placeholder="Aaa" />
@@ -25,14 +42,8 @@ const Movie = () => {
         Get Movie
       </button>
       {loading && <p>Loading...</p>}
-      {data?.movie.message && <p>{data.movie.message}</p>}
-      {data?.movie.movie && (
-        <div>
-          <p>Name: {data.movie.movie.name}</p>
-          <p>Publication date: {data.movie.movie.publicationDate}</p>
-          <p>Is in theater: {data.movie.movie.isInTheater ? 'Yes' : 'No'}</p>
-        </div>
-      )}
+      {error && <p>Something went wrong.</p>}
+      {data && <Response />}
     </>
   );
 };

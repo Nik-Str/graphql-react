@@ -46,7 +46,7 @@ const typeDefs = gql`
 
   type Mutation {
     createUser(input: CreateUserInput!): ID #Could be specified as User, or anything that you want to be returned after query
-    updateUserName(input: UpdateUserNameInput!): Int
+    updateUserName(input: UpdateUserNameInput!): Int #Here I only return a Int due to db response on UPDATE: "changedRows" = 0 | 1
     deleteUser(id: ID!): Int
   }
 
@@ -57,6 +57,7 @@ const typeDefs = gql`
   type MovieErrorResult {
     message: String!
   }
+
   union MovieResult = MovieSuccessResult | MovieErrorResult
 `;
 

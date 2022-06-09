@@ -15,6 +15,7 @@ export const QUERY_ALL_USERS = gql`
 export const QUERY_A_MOVIE = gql`
   query Movie($name: String!) {
     movie(name: $name) {
+      __typename #Show either "MovieSuccessResult" | "MovieErrorResult" in this example. Could be used to identify diffrent results. Doesn't need to be defined here
       ... on MovieSuccessResult {
         movie {
           name
